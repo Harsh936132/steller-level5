@@ -52,27 +52,37 @@ function App() {
   const [walletAddress, setWalletAddress] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [filter, setFilter] = useState('All');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowFeedback(true), 15000); // Show feedback banner after 15s
+    const timer = setTimeout(() => setShowFeedback(true), 15000); 
     return () => clearTimeout(timer);
   }, []);
 
   const connectWallet = async () => {
     setLoading(true);
+    setError(null);
     try {
       if (await isConnected()) {
         const address = await getAddress();
         setWalletAddress(address);
       } else {
-        alert("Please install Freighter wallet");
+        setError("Freighter wallet not found. Please install the extension.");
       }
-    } catch (error) {
-      console.error("Wallet connection failed", error);
+    } catch (err) {
+      console.error("Wallet connection failed", err);
+      setError("Connection rejected. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  const filteredCampaigns = filter === 'All' 
+    ? MOCK_CAMPAIGNS 
+    : MOCK_CAMPAIGNS.filter(c => c.category === filter);
+
+  const categories = ['All', ...new Set(MOCK_CAMPAIGNS.map(c => c.category))];
 
   return (
     <div className="min-h-screen">
@@ -82,6 +92,7 @@ function App() {
           <span>StellarImpact</span>
         </div>
         <div className="flex items-center gap-4">
+          {error && <span className="text-xs text-red-400 bg-red-400/10 px-3 py-1 rounded-full">{error}</span>}
           <button 
             className="btn-primary"
             onClick={walletAddress ? null : connectWallet}
@@ -114,13 +125,22 @@ function App() {
               <TrendingUp className="text-secondary" />
               Active Campaigns
             </h2>
-            <div className="flex gap-4">
-              <span className="badge badge-active">Testnet Phase</span>
+            <div className="flex gap-2">
+              {categories.map(cat => (
+                <button 
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`badge ${filter === cat ? 'badge-active' : 'glass-card'}`}
+                  style={{ cursor: 'pointer', border: filter === cat ? '1px solid var(--primary)' : '1px solid var(--glass-border)' }}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
 
           <div className="grid">
-            {MOCK_CAMPAIGNS.map(campaign => (
+            {filteredCampaigns.map(campaign => (
               <div key={campaign.id} className="glass-card campaign-card">
                 <img 
                   src={campaign.image} 
