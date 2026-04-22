@@ -3,7 +3,7 @@
 Stellar Impact is a transparent, milestone-based crowdfunding platform built on the Stellar network. It ensures that funds donated to social causes are released only upon verification of progress, providing donors with unprecedented security and trust.
 
 ## 🚀 Live Links
-- **Live Demo**: [https://stellar-impact-mvp.vercel.app](https://stellar-impact-mvp.vercel.app) *(Placeholder)*
+- **Live Demo**: [https://steller-impact-level5.vercel.app](https://steller-impact-level5.vercel.app)
 - **Demo Video**: [Youtube Link](https://youtube.com/...) *(Placeholder)*
 
 ## 🛠 Features
