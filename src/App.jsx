@@ -131,62 +131,63 @@ function App() {
                 <TrendingUp className="text-secondary" />
                 Active Campaigns
               </h2>
-            <div className="flex gap-2">
-              {categories.map(cat => (
-                <button 
-                  key={cat}
-                  onClick={() => setFilter(cat)}
-                  className={`badge ${filter === cat ? 'badge-active' : 'glass-card'}`}
-                  style={{ cursor: 'pointer', border: filter === cat ? '1px solid var(--primary)' : '1px solid var(--glass-border)' }}
-                >
-                  {cat}
-                </button>
+              <div className="flex gap-2">
+                {categories.map(cat => (
+                  <button 
+                    key={cat}
+                    onClick={() => setFilter(cat)}
+                    className={`badge ${filter === cat ? 'badge-active' : 'glass-card'}`}
+                    style={{ cursor: 'pointer', border: filter === cat ? '1px solid var(--primary)' : '1px solid var(--glass-border)' }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid">
+              {filteredCampaigns.map(campaign => (
+                <div key={campaign.id} className="glass-card campaign-card">
+                  <img 
+                    src={campaign.image} 
+                    alt={campaign.title} 
+                    style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '1rem' }}
+                  />
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-accent">{campaign.category}</span>
+                    <div className="flex items-center gap-1 text-text-muted text-xs">
+                      <ShieldCheck size={14} className="text-green-500" />
+                      Verified
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold">{campaign.title}</h3>
+                  <p className="text-text-muted text-sm line-clamp-2">{campaign.description}</p>
+                  
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ width: `${(campaign.raised / campaign.goal) * 100}%` }}
+                    ></div>
+                  </div>
+                  
+                  <div className="stats">
+                    <div>
+                      <span className="text-white font-bold">{campaign.raised} XLM</span>
+                      <span className="block text-xs">raised of {campaign.goal}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-white font-bold">{campaign.donors}</span>
+                      <span className="block text-xs">donors</span>
+                    </div>
+                  </div>
+
+                  <button className="btn-primary w-full mt-4" style={{ justifyContent: 'center' }}>
+                    <Heart size={18} />
+                    Donate XLM
+                  </button>
+                </div>
               ))}
             </div>
-          </div>
-
-          <div className="grid">
-            {filteredCampaigns.map(campaign => (
-              <div key={campaign.id} className="glass-card campaign-card">
-                <img 
-                  src={campaign.image} 
-                  alt={campaign.title} 
-                  style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '1rem' }}
-                />
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-accent">{campaign.category}</span>
-                  <div className="flex items-center gap-1 text-text-muted text-xs">
-                    <ShieldCheck size={14} className="text-green-500" />
-                    Verified
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold">{campaign.title}</h3>
-                <p className="text-text-muted text-sm line-clamp-2">{campaign.description}</p>
-                
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${(campaign.raised / campaign.goal) * 100}%` }}
-                  ></div>
-                </div>
-                
-                <div className="stats">
-                  <div>
-                    <span className="text-white font-bold">{campaign.raised} XLM</span>
-                    <span className="block text-xs">raised of {campaign.goal}</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-white font-bold">{campaign.donors}</span>
-                    <span className="block text-xs">donors</span>
-                  </div>
-                </div>
-
-                <button className="btn-primary w-full mt-4" style={{ justifyContent: 'center' }}>
-                  <Heart size={18} />
-                  Donate XLM
-                </button>
-              </div>
-            ))}
           </div>
 
           <aside className="md:w-80">
