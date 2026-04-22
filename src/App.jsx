@@ -54,6 +54,11 @@ function App() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [filter, setFilter] = useState('All');
   const [error, setError] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [recentDonations, setRecentDonations] = useState([
+    { id: 101, user: "GD...1234", amount: 50, campaign: "Clean Water" },
+    { id: 102, user: "GB...5678", amount: 120, campaign: "Women in Tech" }
+  ]);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowFeedback(true), 15000); 
@@ -109,7 +114,7 @@ function App() {
           <h1>Empower Change with <span className="gradient-text">Stellar Impact</span></h1>
           <p>The world's first milestone-based crowdfunding platform built on Stellar. Transparent, secure, and community-driven.</p>
           <div className="flex justify-center gap-4">
-            <button className="btn-primary animate-glow">
+            <button className="btn-primary animate-glow" onClick={() => setShowCreateModal(true)}>
               <PlusCircle size={20} />
               Start a Campaign
             </button>
@@ -119,12 +124,13 @@ function App() {
           </div>
         </header>
 
-        <section className="mt-20">
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-3xl font-bold flex items-center gap-2">
-              <TrendingUp className="text-secondary" />
-              Active Campaigns
-            </h2>
+        <section className="mt-20 flex flex-col md:flex-row gap-10">
+          <div className="flex-grow">
+            <div className="flex justify-between items-center mb-10">
+              <h2 className="text-3xl font-bold flex items-center gap-2">
+                <TrendingUp className="text-secondary" />
+                Active Campaigns
+              </h2>
             <div className="flex gap-2">
               {categories.map(cat => (
                 <button 
@@ -182,8 +188,72 @@ function App() {
               </div>
             ))}
           </div>
+
+          <aside className="md:w-80">
+            <div className="glass-card p-6 sticky" style={{ top: '100px' }}>
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <Zap size={18} className="text-accent" />
+                Recent Activity
+              </h3>
+              <div className="flex flex-col gap-4">
+                {recentDonations.map(donation => (
+                  <div key={donation.id} className="border-left border-primary pl-4 py-1" style={{ borderLeft: '2px solid var(--primary)' }}>
+                    <p className="text-sm font-bold text-white">{donation.amount} XLM Donated</p>
+                    <p className="text-xs text-text-muted">by {donation.user} to {donation.campaign}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 bg-accent/10 rounded-lg">
+                <p className="text-xs text-accent font-bold mb-1 italic">Pro Tip</p>
+                <p className="text-xs text-text-muted">Funds are held in escrow and released only as milestones are verified.</p>
+              </div>
+            </div>
+          </aside>
         </section>
       </main>
+
+      {/* Create Campaign Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="glass-card p-8 w-full max-w-md animate-glow">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <PlusCircle className="text-primary" />
+              Start New Campaign
+            </h2>
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="text-xs text-text-muted block mb-1 uppercase font-bold">Project Title</label>
+                <input type="text" className="input-field" placeholder="e.g. Save the Dolphins" />
+              </div>
+              <div>
+                <label className="text-xs text-text-muted block mb-1 uppercase font-bold">Goal (XLM)</label>
+                <input type="number" className="input-field" placeholder="Target amount" />
+              </div>
+              <div>
+                <label className="text-xs text-text-muted block mb-1 uppercase font-bold">Category</label>
+                <select className="input-field">
+                  <option>Environment</option>
+                  <option>Education</option>
+                  <option>Nature</option>
+                  <option>Health</option>
+                </select>
+              </div>
+              <button 
+                className="btn-primary w-full mt-4 py-3 justify-center"
+                onClick={() => setShowCreateModal(false)}
+              >
+                Create Campaign
+              </button>
+              <button 
+                className="text-text-muted hover:text-white text-sm"
+                onClick={() => setShowCreateModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showFeedback && (
         <div className="glass-card feedback-banner animate-glow">
