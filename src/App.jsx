@@ -104,7 +104,7 @@ function App() {
             disabled={loading}
           >
             <Wallet size={18} />
-            {walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "Connect Wallet"}
+            {walletAddress && typeof walletAddress === 'string' ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "Connect Wallet"}
           </button>
         </div>
       </nav>
